@@ -1,0 +1,26 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ARA"
+        xmlns:Consultatii="clr-namespace:Consultatii;assembly=Consultatii" x:Class="ARA.Specialisti"
+        mc:Ignorable="d"
+        Title="Specialisti" Height="450" Width="800" Loaded="Window_Loaded">
+    <Window.Resources>
+        <CollectionViewSource x:Key="cadruViewSource" d:DesignSource="{d:DesignInstance {x:Type Consultatii:Cadru}, CreateList=True}"/>
+    </Window.Resources>
+    <Grid DataContext="{StaticResource cadruViewSource}">
+        <Button x:Name="btnInapoi" Click="btnInapoi_Click" Content="Inapoi" HorizontalAlignment="Left" Margin="46,330,0,0" VerticalAlignment="Top" Width="117" Height="35"/>
+        <DataGrid x:Name="cadruDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding}" Margin="169,63,223,209" RowDetailsVisibilityMode="VisibleWhenSelected">
+            <DataGrid.Columns>
+                <DataGridTextColumn x:Name="nr_cadruColumn" Binding="{Binding Nr_cadru}" Header="Nr cadru" Width="SizeToHeader"/>
+                <DataGridTextColumn x:Name="numeColumn" Binding="{Binding Nume}" Header="Nume" Width="SizeToHeader"/>
+                <DataGridTextColumn x:Name="prenumeColumn" Binding="{Binding Prenume}" Header="Prenume" Width="SizeToHeader"/>
+                <DataGridTextColumn x:Name="specializareColumn" Binding="{Binding Specializare}" Header="Specializare" Width="SizeToHeader"/>
+                <DataGridTextColumn x:Name="telefonColumn" Binding="{Binding Telefon}" Header="Telefon" Width="SizeToHeader"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+    </Grid>
+</Window>

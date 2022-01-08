@@ -1,0 +1,47 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ARA"
+        xmlns:Consultatii="clr-namespace:Consultatii;assembly=Consultatii" x:Class="ARA.MainWindow"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded">
+    <Window.Resources>
+        <CollectionViewSource x:Key="pacientViewSource" d:DesignSource="{d:DesignInstance {x:Type Consultatii:Pacient}, CreateList=True}"/>
+        <CollectionViewSource x:Key="cadruViewSource" d:DesignSource="{d:DesignInstance {x:Type Consultatii:Cadru}, CreateList=True}"/>
+        <ControlTemplate x:Key="validare">
+            <DockPanel>
+                <TextBlock Foreground="Red" FontSize="30">!</TextBlock>
+                <AdornedElementPlaceholder></AdornedElementPlaceholder>
+            </DockPanel>
+        </ControlTemplate>
+        <Style x:Key="textEroare" TargetType="{x:Type TextBox}">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="ToolTip" Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)/ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <CollectionViewSource x:Key="cadruProgramaresViewSource" Source="{Binding Programares, Source={StaticResource cadruViewSource}}"/>
+    </Window.Resources>
+    <Grid DataContext="{StaticResource pacientViewSource}">
+        <Calendar x:Name="calendarProgram" HorizontalAlignment="Left" Margin="10,210,0,0" VerticalAlignment="Top">
+            <Calendar.DataContext>
+                <Consultatii:ConsultatiiClienti/>
+            </Calendar.DataContext>
+        </Calendar>
+        <TextBlock x:Name="introducere" Background="#FF3079F7" Foreground="White" HorizontalAlignment="Left" Height="51" Margin="10,10,0,0" TextWrapping="Wrap" Text="Bine ati venit la clinica ARA ! Va stam la dispozitie conform orarului de mai jos.&#xA;Va stau la dispozitie dr. Andreea Vidican, dr. Robert Viman si dr. Alin Ungureanu." VerticalAlignment="Top" Width="772"/>
+        <Button x:Name="btnSpecialisti"  Content="Specialisti" HorizontalAlignment="Left" Margin="603,133,0,0" VerticalAlignment="Top" Width="179" Height="28" Click="btnSpecialisti_Click"/>
+        <Button x:Name="btnProgramari" Content="Programari" HorizontalAlignment="Left" Margin="603,78,0,0" VerticalAlignment="Top" Width="179" Height="27" Click="btnProgramari_Click"/>
+        <TextBlock x:Name="anunturi" Foreground="IndianRed" HorizontalAlignment="Left" Height="127" Margin="10,78,0,0" TextWrapping="Wrap" Text="Atentie ! aici este sectiunea de anunturi si necesita atentie din partea tuturor pacientilor, mai ales celor care au progamari inregistrate sau care doresc sa se programeze.&#xD;&#xA;&#xD;&#xA;- Platforma nu va fi functinala in perioada 18.12.2021 - 10.01.2022 din pricina sarbaorilor de iarna.&#xD;&#xA;- In data de 14.12.2022 nu se vor efectua consultari la GINECLOG (dr. Ungureanu Alin) dinmotive personale.&#xD;&#xA; " VerticalAlignment="Top" Width="575"/>
+        <DataGrid x:Name="programaresDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding Source={StaticResource cadruProgramaresViewSource}}" Margin="252,213,174,41" RowDetailsVisibilityMode="VisibleWhenSelected">
+            <DataGrid.Columns>
+                <DataGridTextColumn x:Name="cNPColumn" Binding="{Binding CNP}" Header="CNP" Width="SizeToHeader"/>
+                <DataGridTextColumn x:Name="nr_cadruColumn" Binding="{Binding Nr_cadru}" Header="Nr cadru" Width="SizeToHeader"/>
+                <DataGridTextColumn x:Name="nr_ordineColumn" Binding="{Binding Nr_ordine}" Header="Nr ordine" Width="SizeToHeader"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+    </Grid>
+</Window>
